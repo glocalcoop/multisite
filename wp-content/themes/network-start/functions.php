@@ -160,10 +160,10 @@ function bones_utility_nav() {
 ADD THEME SUPPORT
 *************************/
 
-if ( ! function_exists('community_theme_features') ) {
+if ( ! function_exists('glocal_network_theme_features') ) {
 
 // Register Theme Features
-function community_theme_features()  {
+function glocal_network_theme_features()  {
 
 	// Add theme support for Post Formats
 	$formats = array( 'gallery', 'image', 'video', 'link', 'aside', );
@@ -181,7 +181,7 @@ function community_theme_features()  {
 }
 
 // Hook into the 'after_setup_theme' action
-add_action( 'after_setup_theme', 'community_theme_features' );
+add_action( 'after_setup_theme', 'glocal_network_theme_features' );
 
 }
 
@@ -190,7 +190,7 @@ ENQUEUE AND REGISTER SCRIPTS AND STYLES
 ***************************************/
 
 
-function community_scripts_and_styles() {
+function glocal_network_scripts_and_styles() {
 
 	// deregister WP jquery
 	wp_deregister_script( 'jquery' );
@@ -218,7 +218,7 @@ function community_scripts_and_styles() {
 
 }
 
-if ( !is_admin() ) add_action( 'wp_enqueue_scripts', 'community_scripts_and_styles' );
+if ( !is_admin() ) add_action( 'wp_enqueue_scripts', 'glocal_network_scripts_and_styles' );
 
 
 
@@ -365,8 +365,8 @@ add_action( 'customize_register', 'glocal_network_customize_register' );
 
 
 // Return the category name selected in theme customization
-function glocal_network_community_home_category() {
-	$homecategory = get_option("community_options");
+function glocal_network_glocal_network_home_category() {
+	$homecategory = get_option("glocal_network_options");
 	$homeheading = get_option("post_heading");
 	if (!empty($homecategory)) {
 	    foreach ($homecategory as $key => $option)
@@ -386,7 +386,7 @@ function glocal_network_home_header() {
 
 /************* Get Global Navigation from Site 1 *****************/
 
-function community_navigation() {
+function glocal_network_navigation() {
 
 	//store the current blog_id being viewed
 	global $blog_id;
@@ -396,17 +396,17 @@ function community_navigation() {
 	switch_to_blog(1);
 
 	//output the WordPress navigation menu
-	$community_nav = bones_main_nav();
+	$glocal_network_nav = bones_main_nav();
 
 	//switch back to the current blog being viewed
 	switch_to_blog($current_blog_id);
 
-	return $community_nav;
+	return $glocal_network_nav;
 }
 
 /************* Get Custom Header Images from Other Sites *****************/
 
-function community_get_site_image($site_id) {
+function glocal_network_get_site_image($site_id) {
 	//store the current blog_id being viewed
 	global $blog_id;
 	$current_blog_id = $blog_id;
@@ -425,8 +425,8 @@ function community_get_site_image($site_id) {
 /************* Add Slug to Body Class *****************/
 
 // Add specific CSS class by filter
-add_filter('body_class','community_class_names');
-function community_class_names($classes) {
+add_filter('body_class','glocal_network_class_names');
+function glocal_network_class_names($classes) {
 	// add 'class-name' to the $classes array
 	global $post; 
 	$post_slug_class = $post->post_name; 
@@ -455,9 +455,9 @@ function get_excerpt_by_id($post_id, $length='55', $trailer=' ...') {
 }
 
 // Hack to fix title on static homepage
-add_filter( 'wp_title', 'community_hack_wp_title_for_home' );
+add_filter( 'wp_title', 'glocal_network_hack_wp_title_for_home' );
 
-function community_hack_wp_title_for_home( $title ) {
+function glocal_network_hack_wp_title_for_home( $title ) {
   if( empty( $title ) && ( is_home() || is_front_page() ) ) {
     return __( 'Home', 'glocal-network' ) . ' | ';
   }
@@ -465,15 +465,127 @@ function community_hack_wp_title_for_home( $title ) {
 }
 
 // Remove unused menus
-add_action( 'after_setup_theme', 'remove_theme_customization_community', 20); 
+add_action( 'after_setup_theme', 'remove_theme_customization_glocal_network', 20); 
 
-function remove_theme_customization_community() {
+function remove_theme_customization_glocal_network() {
 
 	unregister_nav_menu( 'secondary-nav' );
 	unregister_nav_menu( 'utility-nav' );
 	unregister_nav_menu( 'footer-links' );
 
 }
+
+/************* Get Recent Posts for All Network Sites *****************/
+// TODOs:
+// Add Sorting
+// Add arguments
+// Write function to render posts
+// Write shortcode to display render posts
+
+function network_posts() {
+
+	$sites = wp_get_sites(); // TODO: Add argument to exclude main site (site 1)
+
+	foreach ($sites as $site) {
+		$site_id = $site['blog_id']; // Variable to hold site ID
+
+		$sitedetails = get_blog_details($site_id);
+
+		if(function_exists('glocal_network_get_site_image')) { 
+			$site_header = glocal_network_get_site_image($site_id);
+		}
+
+		$network_content['site-' . $site_id] = array(
+			'blog_id' => $site_id,
+			'blogname' => $sitedetails->blogname,
+			'siteurl' => $sitedetails->siteurl,
+			'site_header' => $site_header,
+		);
+	    
+	    // Begin switch
+		switch_to_blog( $site_id ); 
+
+			$recent_posts = wp_get_recent_posts(); // TODO: Enable limiting to specific categor(ies)
+
+			foreach( $recent_posts as $recent ) {
+
+				$network_content['site-' . $site_id]['posts'][$recent['guid']] = array(
+					'ID' => $recent['ID'], // Integer value
+					'post_title' => $recent['post_title'],
+					'permalink' => get_permalink( $recent['ID'] ),
+					'post_content' => $recent['post_content'],
+					'post_date' => $recent['post_date'],
+					'post_author' => get_the_author_meta( 'display_name', $recent['post_author'] ),
+					);
+
+				if(wp_get_attachment_url( get_post_thumbnail_id( $recent['ID'] ) )) {
+					$network_content['site-' . $site_id]['posts'][$recent['guid']]['post_thumbnail'] = wp_get_attachment_url( get_post_thumbnail_id( $recent['ID'] ) ); // Put post_thumbnail into array
+				} else {
+					$network_content['site-' . $site_id]['posts'][$recent['guid']]['post_thumbnail'] = ''; // If not thumbnail, empty value instead of false
+				}
+				
+				// TODO: Get link to author profile
+
+				$post_categories = wp_get_post_categories( $recent['ID'] );				
+				foreach($post_categories as $c){
+					$cat = get_category( $c );
+
+					$network_content['site-' . $site_id]['posts'][$recent['guid']]['post_categories'][$cat->slug] = array(
+						'term_id' => $cat->term_id, // Put category ID into array
+						'name' => $cat->name, // Put category name into array
+						'slug' => $cat->slug, // Put category slug into array
+						);
+				}
+			}
+
+		restore_current_blog();
+		// End switch
+
+		// Make array of posts
+
+		foreach ($network_content as $site => $site_detail) {
+			
+			foreach ($site_detail['posts'] as $post => $post_detail) {
+				
+				foreach ($post_detail as $key => $value) {
+
+					$post_date = $post_detail['post_date'];
+
+					$network_posts[$post_date] = array(
+						'post_id' => $post_detail['ID'],
+						'post_title' => $post_detail['post_title'],
+						'post_date' => $post_detail['post_date'],
+						'post_author' => $post_detail['post_author'],
+						'post_content' => $post_detail['post_content'],
+						'permalink' => $post_detail['permalink'],
+						'post_thumbnail' => $post_detail['post_thumbnail'],
+					);
+
+					foreach ($post_detail['post_categories'] as $cats => $cat_detail) {
+						
+						foreach ($cat_detail as $catkey => $catvalue) {
+
+							$network_posts[$post_date]['post_categories'] = array(
+								'term_id' => $cat_detail['term_id'],
+								'name' => $cat_detail['name'],
+								'slug' => $cat_detail['slug'],
+							);
+
+						}
+					}
+
+				}
+			}
+
+		}
+		
+	}
+
+	return $network_posts;
+}
+
+
+
 
 
 ?>
