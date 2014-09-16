@@ -85,7 +85,7 @@ div[role='main'] {
     background: $white;
     margin: 20px 0;
     @include pad($space $space 0);
-    @include breakpoint(md) {@include span-columns(4); }
+    @include breakpoint(md) {@include span-columns(12); }
     h1 {
         margin-bottom: $space-third;
         line-height: 1.1;

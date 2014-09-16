@@ -1,12 +1,13 @@
-					<article id="<?php echo get_post_type( get_the_ID() ); ?>-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
+<article id="<?php echo get_post_type( get_the_ID() ); ?>-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
 
-						<header class="<?php echo get_post_type( get_the_ID() ); ?>-header">
+	<header class="<?php echo get_post_type( get_the_ID() ); ?>-header">
 
-							<h3 class="search-title"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
-							<?php get_template_part( 'partials/byline' ); ?>
+		<h3 class="search-title"><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h3>
 
-						</header>
+		<?php get_template_part( 'partials/byline' ); ?>
 
-						<?php get_template_part( 'partials/content-post-excerpt' ); ?>
+	</header>
 
-					</article>
+	<?php get_template_part( 'partials/content-post', 'excerpt' ); ?>
+
+</article>

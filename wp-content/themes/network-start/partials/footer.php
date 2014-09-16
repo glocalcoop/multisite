@@ -23,14 +23,12 @@
 						<?php if ( is_active_sidebar( 'footer4' ) ) : ?>
 							<?php dynamic_sidebar( 'footer4' ); ?>
 						<?php endif; ?>
-					</section>
-					
+					</section>					
 
     				<nav class="footer-nav" role="navigation clearfix">
     					<?php bones_footer_links(); ?>
     				</nav>
-    
-    
+   
     
 				</div>
 				

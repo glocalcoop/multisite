@@ -1,1 +1,3 @@
-<?php the_tags( '<h6 class="tags">' . __( 'Tags:', 'glocal-network' ) . '</h6> ', ', ', '' ); ?>
+<?php get_template_part( 'partials/tags' ); ?>
+
+<?php get_template_part( 'partials/byline' ); ?>
