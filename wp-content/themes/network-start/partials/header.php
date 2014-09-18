@@ -40,7 +40,7 @@
 
 </head>
 
-<body <?php body_class('community-network'); ?>>
+<body <?php body_class( get_stylesheet() ); ?>>
 
 	<div id="container">
 
