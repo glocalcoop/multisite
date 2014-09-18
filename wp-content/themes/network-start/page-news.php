@@ -1,6 +1,6 @@
 <?php get_template_part( 'partials/header' ); ?>
 
-	<div id="intro" role="intro" class="intro-<?php global $post; echo $post->post_name; ?>">
+	<section id="page-<?php global $post; echo $post->post_name; ?>" class="content-<?php global $post; echo $post->post_name; ?>" role="main">
 
 		<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
@@ -8,8 +8,10 @@
 
 		<?php endwhile; endif; ?>
 
-	</div>
+		<?php get_template_part( 'partials/listings/listing', 'posts' ); ?>
 
-	<?php get_template_part( 'partials/listing', 'posts' ); ?>
-			
+	</section>
+
+	<?php get_template_part( 'partials/sidebar' ); ?>
+
 <?php get_template_part( 'partials/footer' ); ?>

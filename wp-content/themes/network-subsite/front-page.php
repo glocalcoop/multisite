@@ -1,4 +1,4 @@
-<?php get_header(); ?>
+<?php get_template_part( 'partials/header' ); ?>
 
 	<div id="content">
 
@@ -39,7 +39,6 @@
     				<?php endwhile; ?>
     
     
-    
     				<?php if ( function_exists( 'bones_page_navi' ) ) { ?>
     					<?php bones_page_navi(); ?>
     				<?php } else { ?>
@@ -50,8 +49,6 @@
     							</ul>
     						</nav>
     				<?php } ?>
-    
-    
     
     				<?php else : ?>
     
@@ -74,10 +71,10 @@
                 
 			</div>
 
-			<?php get_sidebar(); ?>
+			<?php get_template_part( 'partials/sidebar' ); ?>
 
 		</div>
 
 	</div>
 
-<?php get_footer(); ?>
+<?php get_template_part( 'partials/footer' ); ?>

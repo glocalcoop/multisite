@@ -628,11 +628,18 @@ function display_network_posts() {
 
 		foreach ($post['post_categories'] as $cats => $cat_detail) {
 
-			foreach ($cat_detail as $catkey => $catvalue) {
+			echo '';
 
-				echo $cat_detail['term_id'];
+			echo $cat_detail['term_id'];
+			echo $cat_detail['name'];
+			echo $cat_detail['slug'];
 
-			}
+			//print_r($post['post_categories']);
+			// print_r($cat_detail);
+
+			// foreach ($cat_detail as $catkey => $catvalue) {
+
+			// }
 
 			// echo '<pre>';
 			// var_dump($post['post_categories']);

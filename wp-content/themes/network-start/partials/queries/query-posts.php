@@ -45,6 +45,8 @@ if(is_page('home')) { // If it's the home page
 	
 } else { // If it's not the home page
 
+	echo "I'm a post query";
+
 	if(function_exists( 'network_latest_posts' )) {
 
 		$parameters = array(

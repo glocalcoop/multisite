@@ -62,12 +62,14 @@ div[role='main'].main-news,
 // TWO-COLUMN CONTENT 
 
 // sidebar
-div[role='complementary'] {
+div[role='complementary'],
+aside[role='complementary'] {
 	@include breakpoint(md) {@include span-columns(4);}
 }
 
 // main
-div[role='main'] {
+div[role='main'],
+section[role='main'] {
     padding-bottom: 60px; 
 	@include breakpoint(md) {@include span-columns(12); }
     // single page template 

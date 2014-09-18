@@ -4,6 +4,4 @@
 
 	<?php get_template_part( 'partials/content-post', 'body' ); ?>
 
-	<?php get_template_part( 'partials/content-post-footer', 'footer' ); ?>
-
 </article>

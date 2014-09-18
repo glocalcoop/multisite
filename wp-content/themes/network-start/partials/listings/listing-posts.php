@@ -3,7 +3,7 @@
 	<?php get_template_part( 'partials/queries/query', 'posts' ); ?>
 
 <?php } else { ?>
-	
+
 	<?php get_template_part( 'partials/queries/query-posts', 'singlesite' ); ?>
 
 <?php } ?>
