@@ -39,7 +39,7 @@
 	    
 </head>
 
-<body <?php body_class('network-subsite community-group'); ?>>
+<body <?php body_class( get_stylesheet() ); ?>>
 
 	<div id="container">
 
